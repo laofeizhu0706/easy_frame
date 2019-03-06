@@ -1,2 +1,3 @@
 # easy_frame
-简单的表写springmvc
+
+简单的实现springmvc、mybatis的mini版
