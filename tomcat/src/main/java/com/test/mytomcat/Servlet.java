@@ -7,6 +7,12 @@ package com.test.mytomcat;
 public abstract class Servlet {
     public abstract void doGet(Request request,Response response);
     public abstract void doPost(Request request,Response response);
+
+    /**
+     * 请求分发
+     * @param request
+     * @param response
+     */
     public void service(Request request,Response response) {
         System.out.println(request);
         if("GET".equals(request.getMethod())) {
