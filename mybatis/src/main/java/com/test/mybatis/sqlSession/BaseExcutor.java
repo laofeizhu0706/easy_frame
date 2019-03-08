@@ -11,7 +11,7 @@ import java.sql.*;
  * @author 老肥猪
  * @since 2019/3/7
  */
-public class BaseExcutor<T> implements Excutor {
+public class BaseExcutor<T> extends Excutor {
     @Override
     public <T> T queryOne(String sql, Object object, Object parameter) {
         Field[] fields = object.getClass().getDeclaredFields();
@@ -65,48 +65,4 @@ public class BaseExcutor<T> implements Excutor {
         return (T) object;
     }
 
-    private Connection connection() {
-        try {
-            return DatabasePool.getDatabasePool().getConnection();
-        } catch (InterruptedException e) {
-            throw new RuntimeException("get conn is error");
-        }
-    }
-
-    public String letFirstLetter2Up(String string) {
-        if (string != null && !"".equals(string)) {
-            String up = string.substring(0, 1);
-            if (string.length() == 1) {
-                return up;
-            } else {
-                String latter = string.substring(1);
-                return up.toUpperCase() + latter;
-            }
-        } else {
-            throw new RuntimeException("string is not be null");
-        }
-    }
-
-    /**
-     * 回收
-     *
-     * @param pre
-     * @param conn
-     * @param resultSet
-     */
-    public void closeAll(PreparedStatement pre, Connection conn, ResultSet resultSet) {
-        try {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (pre != null) {
-                pre.close();
-            }
-            if (conn != null) {
-                DatabasePool.getDatabasePool().recycle(conn);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

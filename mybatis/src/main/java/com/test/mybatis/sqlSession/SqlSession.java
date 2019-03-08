@@ -1,7 +1,5 @@
 package com.test.mybatis.sqlSession;
 
-import com.test.mybatis.config.Configuration;
-
 import java.lang.reflect.Proxy;
 
 /**

@@ -1,23 +1,65 @@
-package com.test.springmvc.servlet;
-
-
-import com.test.springmvc.annotation.Controller;
-import com.test.springmvc.annotation.RequestMapping;
-import com.test.springmvc.annotation.RequestParam;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.net.URL;
-import java.util.*;
-
+# 本文讲述了基于HttpServlet实现的springmvc
+### 简介：使用HttpServlet实现简单springmvc，难点其实在于对注解理解，并将注解扫描的东西放入一些数据结构里，便于拿去，最后利用反射，去执行类的方法
+### 整体项目结构：
+![](.principle_images/78f3fb7c.png)
+### 代码实现：
+##### 1.注解：
+```
+/**
+ * @author 老肥猪
+ * @since 2019/2/28
+ * msg:
+ */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Controller {
+    String value() default "";
+}
+```
+```
+/**
+ * @author 老肥猪
+ * @since 2019/2/28
+ * msg:
+ */
+@Target({ElementType.METHOD,ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequestMapping {
+    String value() default "";
+}
+```
+```
+/**
+ * @author 老肥猪
+ * @since 2019/2/28
+ * msg:
+ */
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequestParam {
+    String value() default "";
+}
+```
+##### 2.配置文件application.properties
+```
+basePackage=com.test.controller
+```
+##### 3.web.xml文件
+```
+<?xml version="1.0" encoding="UTF-8" ?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+    <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>com.test.springmvc.servlet.DispatcherServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+</web-app>
+```
+##### 4.Servlet实现
+```
 /**
  * @author 老肥猪
  * @since 2019/2/28
@@ -241,3 +283,37 @@ public class DispatcherServlet extends HttpServlet {
     }
 
 }
+```
+##### 4.测试
+```
+/**
+ * @author 老肥猪
+ * @since 2019/2/28
+ * msg:
+ */
+@Controller
+@RequestMapping("/test")
+public class TestController {
+
+    @RequestMapping("/hello")
+    public String hello(HttpServletResponse response){
+        try {
+            response.getWriter().write("test hello");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+    @RequestMapping("/hello2")
+    public String hello2(HttpServletResponse response, @RequestParam String name,@RequestParam String age){
+        try {
+            response.getWriter().write("hello "+name+",your age is "+age);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+}
+```
+### 总结：
+我们使用了接近200行的代码实现了springmvc的三个注解，还有一些注解没有想到更好的实现的方法，暂时现不实现。

@@ -19,7 +19,7 @@ import java.io.IOException;
 public class TestController {
 
     @RequestMapping("/hello")
-    public String hello(HttpServletRequest request, HttpServletResponse response){
+    public String hello(HttpServletResponse response){
         try {
             response.getWriter().write("test hello");
         } catch (IOException e) {
