@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>rpc-parent</artifactId>
+        <groupId>com.laofeizhu.rpc</groupId>
+        <version>1.0</version>
+        <relativePath>../rpc-parent/pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>rpc-test</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.laofeizhu.rpc</groupId>
+            <artifactId>rpc-center</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+    
+</project>
